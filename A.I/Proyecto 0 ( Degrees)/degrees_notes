@@ -1,0 +1,227 @@
+
+# # Maps names to a set of corresponding person_ids
+# names = {}
+
+# # Maps person_ids to a dictionary of: name, birth, movies (a set of movie_ids)
+# people = {}
+
+# # Maps movie_ids to a dictionary of: title, year, stars (a set of person_ids)
+# movies = {}
+
+
+# def load_data(directory):             
+#     """
+#     Load data from CSV files into memory. The function assumes that there is a CSV file called "people.csv" located in the directory specified by the directory argument.
+#     """
+#     # Load people
+#     with open(f"{directory}/people.csv", encoding="utf-8") as f:
+
+#         #f refers to the file object that is opened using the open() function
+#         #DictReader is a class in Python's csv module that allows you to read a CSV file as a sequence of dictionaries.I can choose the delimeter(a coma by default)
+
+#         reader = csv.DictReader(f)
+#         #Dictionary for storing information
+#         for row in reader:
+#             people[row["id"]] = {
+#                 "name": row["name"],
+#                 "birth": row["birth"],
+#                 "movies": set()
+#             }
+#             #checks if the person's name is already in the names dictionary(.lower means lower case).If not it creates a new set with persons ID as only element
+#             #Dictionary for looking a person
+
+#             if row["name"].lower() not in names:
+#                 names[row["name"].lower()] = {row["id"]}
+#             else:
+#                 names[row["name"].lower()].add(row["id"])
+
+#                 #If the person's name is already in the names dictionary, the code simply adds the person's ID to the set associated with that name.
+
+#     # Load movies
+#     with open(f"{directory}/movies.csv", encoding="utf-8") as f:
+#         reader = csv.DictReader(f)
+#         for row in reader:
+#             movies[row["id"]] = {
+#                 "title": row["title"],
+#                 "year": row["year"],
+#                 "stars": set()
+#             }
+
+#     # Load stars
+#     with open(f"{directory}/stars.csv", encoding="utf-8") as f:
+#         reader = csv.DictReader(f)
+#         for row in reader:
+#             try:
+#                 people[row["person_id"]]["movies"].add(row["movie_id"])
+#                 movies[row["movie_id"]]["stars"].add(row["person_id"])
+#             except KeyError:
+#                 pass
+
+# #If the person_id or movie_id is not already present in the people or movies dictionaries respectively, a KeyError exception will be raised. This exception is caught by the try-except block, and the program continues to the next row in the CSV file.            
+# #It is trying to read one as a key and add the other to it, and viceversa.
+
+# def main():
+
+# #This line defines a function called main. This is a common practice in Python for organizing code into reusable blocks.
+
+#     if len(sys.argv) > 2:
+#         sys.exit("Usage: python degrees.py [directory]")
+#     directory = sys.argv[1] if len(sys.argv) == 2 else "large"
+
+# #checks the number of arguments passed to the script from the command line. If more than two arguments, exits the program
+# #This is used to specify the directory where the data files are located.
+
+#     # Load data from files into memory
+#     print("Loading data...")
+#     load_data(directory)
+#     print("Data loaded.")
+
+#     source = person_id_for_name(input("Name: "))
+#     if source is None:
+#         sys.exit("Person not found.")
+#     target = person_id_for_name(input("Name: "))
+#     if target is None:
+#         sys.exit("Person not found.")
+# #If the name given doesnt match with an ID in our data, exit the system.
+
+# #Now lets use the ID we were able to match to find the shortest path.
+#     path = shortest_path(source, target)
+
+#     if path is None:
+#         print("Not connected.")
+#     else:
+#         degrees = len(path)
+#         print(f"{degrees} degrees of separation.")
+
+# # modifies the path variable to include the source person at the beginning.Path is a list with a new tuple inside(no movie ID, source person ID) + EXISTING path list.
+# #The None value in the first tuple indicates that there is no movie connecting the source person to any other person in the path.THIS WAY WE CAN IDENTIFY THE BEGGINING OF THE PATH.
+#         path = [(None, source)] + path
+
+#         #Loop. iterate degrees number of times. degrees is the length of the shortest path found between the two people.
+#         for i in range(degrees):
+#             #variable = dictionary storing people info( set to the name of the person in the current tuple in the path list, which is the first person in the pair.)
+#             person1 = people[path[i][1]]["name"]
+#             person2 = people[path[i + 1][1]]["name"]
+#             movie = movies[path[i + 1][0]]["title"]
+#             #This line sets the variable movie to the title of the movie that connects the two people in the current and next tuples in the path list.
+#             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
+# #The path list includes the source person at the beginning, which is why the loop starts at i=0 and the second person in each pair is accessed using i + 1 instead of just i.
+
+
+
+# def shortest_path(source, target):
+#     """
+#     Returns the shortest list of (movie_id, person_id) pairs
+#     that connect the source to the target.
+
+#     If no possible path, returns None.
+#     """
+#     #1=Start with a Frontier with an Initial State. 
+#     initial_node = Node(state=source, parent=None, action=None)    #First Node
+#     frontier = QueueFrontier()
+#     frontier.add(initial_node)
+
+#     #2=Start with an Empty explored_set , for total cost later.
+#     num_states_explored = 0
+
+#     #2=Start an empty set to add the explored nodes, so that we do not go back.The set() function creates an empty set, whereas () creates an empty tuple.
+#     explored_set = set()
+
+#     #Loop:
+#     while True:
+#         print(frontier)
+#         if frontier.empty():
+#             raise Exception("no solution") 
+
+#     #3=Remove a node from Frontier
+#         node = frontier.remove()
+#         num_states_explored += 1    
+
+#     #4=If node contains solution, return the solution.To do it we are going to backtrack our way through the path.
+#         if node == target:
+#             actions = []
+#             cells = []
+
+#     #Follow parent nodes to finde the solution
+#             while node.parent is not None:
+#                 actions.append(node.action)
+#                 cells.append(node.state)
+#                 node = node.parent   #we are looking at the parent of every node and adding their actions and states to our list created.
+#             actions.reverse()
+#             cells.reverse()
+#             solution = (actions, cells)
+#             return solution
+
+#     #5=If not solution, Add the node to explored set
+#         explored_set.add(node.state)
+
+#     #6=Expand node to nearest neighbours, add resulting nodes to the frontier if they arent already in the frontier or explored set
+#         for action, state in neighbors_for_person(node.state):
+#             if not frontier.contains_state(state) and state not in explored_set:
+#                 child = Node(state=state, parent=node, action=action)
+#                 frontier.add(child)
+
+
+
+#     # TODO
+#     raise NotImplementedError
+
+
+
+
+# def person_id_for_name(name):
+#     """
+#     Returns the IMDB id for a person's name,
+#     resolving ambiguities as needed.
+#     """
+#     person_ids = list(names.get(name.lower(), set()))
+# #This line looks up the given name in the names dictionary and returns a set of corresponding person IDs. If the name is not found in the dictionary, an empty set is returned.
+# #list(names/dictionary.get(name.lower/key, default action set() ))
+#  #The purpose of the person_id_for_name function is to handle these cases by allowing the user to manually choose the correct ID if necessary.So even though there should only be one ID per name, we handle that ambiguity.
+    
+#     if len(person_ids) == 0:
+#         return None
+# #If no person IDs are found for the given name, the function returns None.
+
+# #if more than one ID is found for the given name:
+#     elif len(person_ids) > 1:
+#         print(f"Which '{name}'?")
+#         for person_id in person_ids:
+#             person = people[person_id]
+#             name = person["name"]
+#             birth = person["birth"]
+#             #So, the purpose of the name and birth variables is simply to make the output more readable and informative for the user, by displaying the person's name and birthdate along with their ID.
+#             print(f"ID: {person_id}, Name: {name}, Birth: {birth}")
+#         try:
+#             person_id = input("Intended Person ID: ")
+#             if person_id in person_ids:
+#                 return person_id
+#         except ValueError:
+#             pass
+#         return None
+#     else:
+#         return person_ids[0]
+# #If only one person ID is found for the given name, it is returned as the output of the function.
+
+# def neighbors_for_person(person_id):
+#     """
+#     Returns (movie_id, person_id) pairs for people
+#     who starred with a given person.
+#     """
+#     movie_ids = people[person_id]["movies"]
+#     #This line extracts the IDs of movies the given person has starred in. It does so by indexing the people dictionary with person_id to get a dictionary representing the person, and then accessing the "movies" key of that dictionary.
+#     neighbors = set()
+#     for movie_id in movie_ids:
+#         for person_id in movies[movie_id]["stars"]:
+#             neighbors.add((movie_id, person_id))
+#     return neighbors
+
+
+# if __name__ == "__main__":
+#     main()
+
+
+# # standard Python idiom that checks if the script is being run directly from the command line (as opposed to being imported as a module into another Python script). If it is being run directly, then the code in the indented block below this line will be executed.
+
+
+# #Each neighbor is a tuple of the form (movie_id, person_id) where movie_id is the ID of a movie that the person in the original tuple acted in with another person whose ID is person_id. Therefore, the first element of the neighbor tuple is a movie ID. This movie ID is added to the tuple of the neighbor to create a new tuple of the form (movie_id, person_id) that is added to the end of the path list with path.append(neighbor + (person_id,)).
