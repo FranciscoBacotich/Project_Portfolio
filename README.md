@@ -7,7 +7,7 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=franciscobacotich&label=Profile%20views&color=0e75b6&style=flat" alt="franciscobacotich" /> </p>
 
-- 🔭 I’m currently working on **UFC analysis**
+- 🔭 I’m currently working on **UFC Analysis**
 
 - 🌱 I’m currently learning **Python, SQL, pandas, Tableu and Power BI**
 
