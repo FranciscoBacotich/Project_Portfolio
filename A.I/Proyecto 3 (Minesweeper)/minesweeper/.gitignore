@@ -1,0 +1,5 @@
+# Ignore all files in a specific directory
+/requirements.txt/
+/runner.py/
+/assets/
+/_pycache_/
