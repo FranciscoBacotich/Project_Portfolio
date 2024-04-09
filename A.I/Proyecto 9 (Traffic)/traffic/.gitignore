@@ -1,0 +1,12 @@
+# .gitignore
+
+# Virtual environment
+venv/
+env/
+env_traffic/
+
+# VSCode settings
+.vscode/
+
+/gtsrb/
+/requirements.txt/
