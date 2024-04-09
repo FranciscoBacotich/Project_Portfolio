@@ -1,4 +1,0 @@
-1- We are creating a knowledge base that represents everything.For example A and B cant be knight and knave at the same time.This Knloedge base will be true for every case.
-2-The And function allows you to combine multiple constraints that must all be true, the Or function allows you to express that at least one of a set of constraints is true, and the Not function negates a constraint.
-3-First puzzle, we know he is lying because he cant be both at the same time.So we have to make the ai check with the knoledge base
-4-
