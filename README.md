@@ -19,6 +19,9 @@
 
 - ⚡ Fun fact **I love UFC and it is my first analysis I have ever done. Will expand in the future!**
 
+-Summary: 
+            -AI: is a recolection of the projects/assigments that i had to do for CS50x Introduction to Artificial Inteligence with Python course.
+            -local_ufc: is jupyter notebook file with the analysis on a kaggle dataset of UFC fights.
 
 <p align="left">
 </p>
